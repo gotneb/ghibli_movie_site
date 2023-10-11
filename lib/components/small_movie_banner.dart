@@ -9,7 +9,7 @@ class SmallMovieBanner extends StatefulWidget {
 }
 
 class _SmallMovieBannerState extends State<SmallMovieBanner> {
-  static const maxScale = 1.5;
+  static const maxScale = 1.3;
   static const normalScale = 1.0;
 
   static const onEnterCurve = Curves.easeOutExpo;
@@ -28,7 +28,7 @@ class _SmallMovieBannerState extends State<SmallMovieBanner> {
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 400),
-      margin: EdgeInsets.symmetric(horizontal: isInside ? 50 : 0),
+      margin: EdgeInsets.symmetric(horizontal: isInside ? 30 : 0),
       decoration: BoxDecoration(
         border: Border.all(
           color: !isInside ? Colors.white : Colors.transparent,
