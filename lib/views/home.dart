@@ -5,6 +5,8 @@ import 'package:ghibli_movie_site/models/movie.dart';
 import 'package:ghibli_movie_site/services/api.dart';
 import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
 
+import 'package:ghibli_movie_site/styles.dart';
+
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
@@ -54,7 +56,7 @@ class HomeView extends StatelessWidget {
             colors: [blackColor, Colors.transparent],
             begin: Alignment.topLeft,
             end: Alignment.topRight,
-            stops: [1 - trailerRatio, .70]),
+            stops: [.35, 1]),
       ),
     );
 
@@ -115,36 +117,45 @@ class HomeView extends StatelessWidget {
       spacing: 2.0,
     );
 
-    return Container(
-      color: Colors.red,
-      width: 0.3 * width,
+    return SizedBox(
+      width: 0.35 * width,
       height: 0.55 * height,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image.network(movie.posterTitle),
-          const SizedBox(height: 16),
+          const SizedBox(height: 32),
           stars,
           const SizedBox(height: 8),
-          Text('${movie.title} / ${movie.originalTitle}'),
+          Text(
+            '${movie.title} / ${movie.originalTitle}',
+            style: CustomStyle.movieTitle,
+          ),
           const SizedBox(height: 8),
           Text(
-              '${movie.year} | ${movie.formatedHour} | ${movie.formatedGenres}'),
-          const SizedBox(height: 8),
+            '${movie.year} | ${movie.formatedHour} | ${movie.formatedGenres}',
+            style: CustomStyle.normalText,
+          ),
+          const SizedBox(height: 24),
           Flexible(
               child: Text(
             movie.description,
+            style: CustomStyle.description,
             overflow: TextOverflow.ellipsis,
             maxLines: 4,
           )),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: 120,
+          const SizedBox(height: 24),
+          FittedBox(
             child: ElevatedButton(
               onPressed: () {},
+              style: CustomStyle.mainButtonStyle,
               child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Icon(Icons.play_arrow), Text('Watch')]),
+                  children: [
+                    Icon(Icons.play_arrow_rounded, size: 32),
+                    SizedBox(width: 12),
+                    Text('WATCH', style: CustomStyle.buttonText),
+                  ]),
             ),
           ),
         ],
@@ -153,20 +164,21 @@ class HomeView extends StatelessWidget {
   }
 
   Widget _buildMoviesList(BuildContext context) {
-
     final movies = ScrollConfiguration(
       behavior: MyCustomScrollBehavior(),
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: 6,
-        separatorBuilder: (context, index) => SizedBox(width: 0.02* MediaQuery.sizeOf(context).width),
+        separatorBuilder: (context, index) =>
+            SizedBox(width: 0.02 * MediaQuery.sizeOf(context).width),
         itemBuilder: (context, index) => const SmallMovieBanner(),
       ),
     );
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 0.04 * MediaQuery.sizeOf(context).width),
+      padding: EdgeInsets.symmetric(
+          horizontal: 0.04 * MediaQuery.sizeOf(context).width),
       decoration: BoxDecoration(
         border: Border.all(width: 0, color: blackColor),
         color: blackColor,
@@ -174,12 +186,16 @@ class HomeView extends StatelessWidget {
       width: MediaQuery.sizeOf(context).width,
       //height: sideContentRatio * MediaQuery.sizeOf(context).height,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Text('You might like', style: TextStyle(color: Colors.white)),
+        const Row(children: [
+          Text('You might like', style: CustomStyle.listText),
+          Icon(Icons.chevron_right_sharp, color: Colors.white, size: 32),
+        ]),
         const SizedBox(height: 16),
         SizedBox(
           height: sideContentRatio * MediaQuery.sizeOf(context).height,
           child: movies,
         ),
+        const SizedBox(height: 16),
       ]),
     );
   }
