@@ -49,4 +49,14 @@ class Movie {
       gallery: json['gallery'].cast<String>(),
     );
   }
+
+  String get formatedHour {
+    final hours = duration ~/60;
+    int minutes = duration % 60;
+    return '${hours}h ${minutes}m';
+  }
+
+  String get formatedGenres {
+    return genres.join('/');
+  }
 }
