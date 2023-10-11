@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:ghibli_movie_site/models/movie.dart';
 import 'package:ghibli_movie_site/services/api.dart';
+import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
+
+  static const searchRatio = 0.05;
+  static const mainContentRatio = 0.7;
+  static const sideContentRatio = 0.25;
+  static const trailerRatio = 0.65;
 
   @override
   Widget build(BuildContext context) {
@@ -13,16 +19,6 @@ class HomeView extends StatelessWidget {
   }
 
   Widget _loadData(BuildContext context) {
-    // return Center(
-    //   child: ElevatedButton(
-    //     onPressed: () async {
-    //       final movie = await Api.findByID(id: 'a5f2f6dbbd5a2753a4ee50434669f650ae4d5f6c742b7da63ec502372f340b97');
-    //       print(movie.title);
-    //     },
-    //     child: Text('Hi'),
-    //   ),
-    // );
-
     const loadingScreen = Center(
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -30,11 +26,10 @@ class HomeView extends StatelessWidget {
     );
 
     return FutureBuilder(
-      future: Api.findByID(
-          id: '74110f0e3c7e847150907204a213de2d173c9fbac8535660c4669fb710ee580e'),
+      future: Api.search(titleMovie: 'heart'),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return _buildBody(context, topMovie: snapshot.data!);
+          return _buildBody(context, topMovie: snapshot.data![0]);
         }
         return loadingScreen;
       },
@@ -47,73 +42,83 @@ class HomeView extends StatelessWidget {
 
     final blackGradient = Container(
       width: screenWidth,
-      height: .75 * screenHeight,
+      height: mainContentRatio * screenHeight,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
             colors: [Colors.black, Colors.transparent],
             begin: Alignment.topLeft,
             end: Alignment.topRight,
-            stops: [.25, 1]),
+            stops: [1-trailerRatio, .65]),
       ),
     );
 
+    final mainContent = Padding(
+      padding: EdgeInsets.symmetric(horizontal: 0.04 * screenWidth),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildMovieBanner(topMovie,
+                width: screenWidth, height: screenHeight)
+          ]),
+    );
+
+    final trailer = Align(
+      alignment: Alignment.centerRight,
+      child: _buildVideo(context, movie: topMovie),
+    );
+
     return Column(children: [
-      Container(
-        color: Colors.red,
+      _buildTextBox(context),
+      SizedBox(
         width: screenWidth,
-        height: .75 * screenHeight,
+        height: mainContentRatio * screenHeight,
         child: Stack(children: [
-          // Video player
-          Align(
-            alignment: Alignment.centerRight,
-            child: _buildVideo(context, movie: topMovie),
-          ),
-          // Gradient
+          trailer,
           blackGradient,
-          // Main content
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 0.04 * screenWidth),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildTextBox(context),
-                const Spacer(),
-                _buildMovieBanner(topMovie,
-                    width: screenWidth, height: screenHeight),
-                const Spacer(),
-              ],
-            ),
-          ),
+          mainContent,
         ]),
       ),
       // List of others movies
-      Container(
-        color: Colors.green,
-        width: screenWidth,
-        height: .25 * screenHeight,
-      ),
+      _buildMoviesList(context),
     ]);
   }
 
   Widget _buildTextBox(BuildContext context) {
     return Container(
-      color: Colors.blue,
-      margin: EdgeInsets.only(top: 0.04 * MediaQuery.sizeOf(context).height),
+      color: const Color(0xFF0D0D0D),
       width: MediaQuery.sizeOf(context).width,
-      height: 50,
+      height: searchRatio * MediaQuery.sizeOf(context).height,
     );
   }
 
   Widget _buildMovieBanner(Movie movie, {required width, required height}) {
+    print(movie.score);
+
+    final stars = SmoothStarRating(
+      allowHalfRating: true,
+      onRatingChanged: (_) {},
+      starCount: 5,
+      rating: movie.score / 2,
+      size: 20.0,
+      filledIconData: Icons.star_rounded,
+      halfFilledIconData: Icons.star_half_rounded,
+      color: Colors.white,
+      borderColor: Colors.white,
+      spacing: 0.0,
+    );
+
     return Container(
       color: Colors.red,
       width: 0.3 * width,
-      height: 0.4 * height,
+      height: 0.45 * height,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image.network(movie.posterTitle),
           const SizedBox(height: 16),
+          stars,
+          const SizedBox(height: 8),
           Text('${movie.title} / ${movie.originalTitle}'),
           const SizedBox(height: 8),
           Text(
@@ -131,8 +136,8 @@ class HomeView extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {},
               child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Icon(Icons.play_arrow), Text('Watch')]),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [Icon(Icons.play_arrow), Text('Watch')]),
             ),
           ),
         ],
@@ -140,11 +145,20 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  Widget _buildMoviesList(BuildContext context) {
+    return Container(
+      color: const Color(0xFF0D0D0D),
+      width: MediaQuery.sizeOf(context).width,
+      height: sideContentRatio * MediaQuery.sizeOf(context).height,
+    );
+  }
+
   Widget _buildVideo(BuildContext context, {required Movie movie}) {
     return Image.network(
       movie.backgroundPoster,
       fit: BoxFit.fill,
-      width: .8 * MediaQuery.sizeOf(context).width,
+      width: trailerRatio * MediaQuery.sizeOf(context).width,
+      height: MediaQuery.sizeOf(context).height,
     );
   }
 }
