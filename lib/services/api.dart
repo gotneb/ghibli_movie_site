@@ -8,13 +8,10 @@ class Api {
   static final dio = Dio();
 
   static Future<List<Movie>> search({required String titleMovie}) async {
-    final url = '$path/movie/$titleMovie';
-    final response = await http.get(Uri.parse(url), headers: {
-      'Access-Control-Allow-Origin': '*',
-    });
+    final url = '/movie/$titleMovie';
+    final response = await http.get(Uri.https(path, url));
 
-    //print('Response:\n${response.body}');
-    List<dynamic> json = jsonDecode(response.body);
+    List<dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
 
     final List<Movie> movies = [];
     for (var data in json) {
