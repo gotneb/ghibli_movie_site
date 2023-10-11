@@ -32,7 +32,7 @@ class HomeView extends StatelessWidget {
     );
 
     return FutureBuilder(
-      future: Api.search(titleMovie: 'mononoke'),
+      future: Api.search(titleMovie: 'howl'),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return _buildBody(context, topMovie: snapshot.data![0]);
@@ -56,7 +56,7 @@ class HomeView extends StatelessWidget {
             colors: [blackColor, Colors.transparent],
             begin: Alignment.topLeft,
             end: Alignment.topRight,
-            stops: [.35, 1]),
+            stops: [.35, .6]),
       ),
     );
 
