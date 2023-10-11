@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ghibli_movie_site/custom_widgets/custom_scroll.dart';
 import 'package:ghibli_movie_site/views/home.dart';
 
 void main() {
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       title: 'Ghibli Movies',
       theme: theme,
       home: const HomeView(),
