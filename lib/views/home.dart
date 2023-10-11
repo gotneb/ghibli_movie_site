@@ -1,127 +1,150 @@
 import 'package:flutter/material.dart';
-import 'package:chewie/chewie.dart';
-import 'package:video_player/video_player.dart';
+import 'package:ghibli_movie_site/models/movie.dart';
+import 'package:ghibli_movie_site/services/api.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
-
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  static const url =
-      'https://gemootest.s3.us-east-2.amazonaws.com/s/res/514885813225336832/90c28ce7cddf057bd0dbdc1cf19ad968.mp4?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARLZICB6QQHKRCV7K%2F20231009%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20231009T151630Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Signature=d25263d35750b61ab43782c8b6147ba6f068c11ee560eeda6ad047c257b615a0';
-
-  VideoPlayerController? videoController;
-  ChewieController? chewieController;
-
-  @override
-  void initState() {
-    super.initState();
-    initializePlayers();
-  }
-
-  Future<void> initializePlayers() async {
-    videoController = VideoPlayerController.networkUrl(Uri.parse(url));
-    await videoController!.initialize();
-    chewieController = ChewieController(
-      videoPlayerController: videoController!,
-      showControls: false,
-      aspectRatio: 16 / 9,
-      fullScreenByDefault: true,
-      allowFullScreen: true,
-      //autoPlay: true,
-    );
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: buildBody(context),
+      body: _loadData(context),
     );
   }
 
-  Widget buildBody(BuildContext context) {
+  Widget _loadData(BuildContext context) {
+    // return Center(
+    //   child: ElevatedButton(
+    //     onPressed: () async {
+    //       final movie = await Api.findByID(id: 'a5f2f6dbbd5a2753a4ee50434669f650ae4d5f6c742b7da63ec502372f340b97');
+    //       print(movie.title);
+    //     },
+    //     child: Text('Hi'),
+    //   ),
+    // );
+
+    const loadingScreen = Center(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [CircularProgressIndicator(), Text('Loading')]),
+    );
+
+    return FutureBuilder(
+      future: Api.findByID(
+          id: '74110f0e3c7e847150907204a213de2d173c9fbac8535660c4669fb710ee580e'),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return _buildBody(context, topMovie: snapshot.data!);
+        }
+        return loadingScreen;
+      },
+    );
+  }
+
+  Widget _buildBody(BuildContext context, {required Movie topMovie}) {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final screenHeight = MediaQuery.sizeOf(context).height;
 
-    return chewieController != null &&
-            chewieController!.videoPlayerController.value.isInitialized
-        ? Stack(
-            children: [
-              // Video Player
-              Container(
-                color: Colors.blue,
-                child: Chewie(controller: chewieController!),
-              ),
-              // Main presentation
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 0.05 * screenWidth),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Spacer(),
-                    _movieBanner(screenWidth, screenHeight),
-                    const Spacer(),
-                    const Text('You Might Like'),
-                    const SizedBox(height: 20),
-                    _buildListMovies(screenWidth, screenHeight),
-                  ],
-                ),
-              ),
-            ],
-          )
-        : const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 20),
-              Text('Loading'),
-            ],
-          );
+    final blackGradient = Container(
+      width: screenWidth,
+      height: .75 * screenHeight,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+            colors: [Colors.black, Colors.transparent],
+            begin: Alignment.topLeft,
+            end: Alignment.topRight,
+            stops: [.25, 1]),
+      ),
+    );
+
+    return Column(children: [
+      Container(
+        color: Colors.red,
+        width: screenWidth,
+        height: .75 * screenHeight,
+        child: Stack(children: [
+          // Video player
+          Align(
+            alignment: Alignment.centerRight,
+            child: _buildVideo(context, movie: topMovie),
+          ),
+          // Gradient
+          blackGradient,
+          // Main content
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 0.04 * screenWidth),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildTextBox(context),
+                const Spacer(),
+                _buildMovieBanner(topMovie,
+                    width: screenWidth, height: screenHeight),
+                const Spacer(),
+              ],
+            ),
+          ),
+        ]),
+      ),
+      // List of others movies
+      Container(
+        color: Colors.green,
+        width: screenWidth,
+        height: .25 * screenHeight,
+      ),
+    ]);
   }
 
-  Widget _movieBanner(double screenWidth, double screenHeight) {
+  Widget _buildTextBox(BuildContext context) {
+    return Container(
+      color: Colors.blue,
+      margin: EdgeInsets.only(top: 0.04 * MediaQuery.sizeOf(context).height),
+      width: MediaQuery.sizeOf(context).width,
+      height: 50,
+    );
+  }
+
+  Widget _buildMovieBanner(Movie movie, {required width, required height}) {
     return Container(
       color: Colors.red,
-      width: 0.4 * screenWidth,
-      height: 0.44 * screenHeight,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Image.network(
-            'https://occ-0-2794-2219.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABWWyvMGriEaB0oV3gVDqqsKI7-I5VmkJXqbF0LwN1_f003lJFZmTAdaYJxcXDTKp-rKaEptUNgvLckaPC9S259j5yI-gVhlfJu3yZ4_vZcAy.png?r=9dc',
-            height: 0.2 * screenHeight),
-        Text('耳をすませば (Whisper of Hearts)'),
-        Text('2017 | 1h 51min | Romance / Drama / Anime'),
-        const Text(
-            "Shizuku lives a simple life, dominated by her love for stories and writing. One day she notices that all the library books she has have been previously checked out by the same person: 'Seiji Amasawa'."),
-        SizedBox(
-          width: 0.1 * screenWidth,
-          child: ElevatedButton(
-            onPressed: () {},
-            child: Row(children: [
-              Icon(Icons.play_arrow_rounded),
-              Text('Watch'),
-            ],),
+      width: 0.3 * width,
+      height: 0.4 * height,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.network(movie.posterTitle),
+          const SizedBox(height: 16),
+          Text('${movie.title} / ${movie.originalTitle}'),
+          const SizedBox(height: 8),
+          Text(
+              '${movie.year} | ${movie.formatedHour} | ${movie.formatedGenres}'),
+          const SizedBox(height: 8),
+          Flexible(
+              child: Text(
+            movie.description,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 4,
+          )),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: 120,
+            child: ElevatedButton(
+              onPressed: () {},
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Icon(Icons.play_arrow), Text('Watch')]),
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 
-  Widget _buildListMovies(double screenWidth, double screenHeight) {
-    return Container(
-      width: .9 * screenWidth,
-      height: .25 * screenHeight,
-      color: Colors.white,
+  Widget _buildVideo(BuildContext context, {required Movie movie}) {
+    return Image.network(
+      movie.backgroundPoster,
+      fit: BoxFit.fill,
+      width: .8 * MediaQuery.sizeOf(context).width,
     );
-  }
-
-  @override
-  void dispose() {
-    videoController?.dispose();
-    chewieController?.dispose();
-    super.dispose();
   }
 }
