@@ -6,10 +6,12 @@ import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.da
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
-  static const searchRatio = 0.05;
-  static const mainContentRatio = 0.7;
-  static const sideContentRatio = 0.25;
+  static const searchRatio = 0.06;
+  static const mainContentRatio = 0.8;
+  static const sideContentRatio = 0.35;
   static const trailerRatio = 0.65;
+
+  static const blackColor = Color(0xFF0D0D0D);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class HomeView extends StatelessWidget {
     );
 
     return FutureBuilder(
-      future: Api.search(titleMovie: 'heart'),
+      future: Api.search(titleMovie: 'whisper'),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return _buildBody(context, topMovie: snapshot.data![0]);
@@ -43,12 +45,14 @@ class HomeView extends StatelessWidget {
     final blackGradient = Container(
       width: screenWidth,
       height: mainContentRatio * screenHeight,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-            colors: [Colors.black, Colors.transparent],
+      decoration: BoxDecoration(
+        border: Border.all(width: 0, color: blackColor),
+        color: blackColor,
+        gradient: const LinearGradient(
+            colors: [blackColor, Colors.transparent],
             begin: Alignment.topLeft,
             end: Alignment.topRight,
-            stops: [1-trailerRatio, .65]),
+            stops: [1 - trailerRatio, .65]),
       ),
     );
 
@@ -68,7 +72,7 @@ class HomeView extends StatelessWidget {
       child: _buildVideo(context, movie: topMovie),
     );
 
-    return Column(children: [
+    return ListView(children: [
       _buildTextBox(context),
       SizedBox(
         width: screenWidth,
@@ -86,15 +90,16 @@ class HomeView extends StatelessWidget {
 
   Widget _buildTextBox(BuildContext context) {
     return Container(
-      color: const Color(0xFF0D0D0D),
       width: MediaQuery.sizeOf(context).width,
       height: searchRatio * MediaQuery.sizeOf(context).height,
+      decoration: BoxDecoration(
+        border: Border.all(width: 0, color: blackColor),
+        color: blackColor,
+      ),
     );
   }
 
   Widget _buildMovieBanner(Movie movie, {required width, required height}) {
-    print(movie.score);
-
     final stars = SmoothStarRating(
       allowHalfRating: true,
       onRatingChanged: (_) {},
@@ -105,13 +110,13 @@ class HomeView extends StatelessWidget {
       halfFilledIconData: Icons.star_half_rounded,
       color: Colors.white,
       borderColor: Colors.white,
-      spacing: 0.0,
+      spacing: 2.0,
     );
 
     return Container(
       color: Colors.red,
       width: 0.3 * width,
-      height: 0.45 * height,
+      height: 0.55 * height,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -146,10 +151,35 @@ class HomeView extends StatelessWidget {
   }
 
   Widget _buildMoviesList(BuildContext context) {
+    final listHeight =
+        (sideContentRatio - 0.04) * MediaQuery.sizeOf(context).height;
+
+    final movies = ListView.separated(
+      physics: const AlwaysScrollableScrollPhysics(),
+      scrollDirection: Axis.horizontal,
+      itemCount: 8,
+      separatorBuilder: (context, index) => const SizedBox(width: 60),
+      itemBuilder: (context, index) => AspectRatio(
+        aspectRatio: 5 / 4,
+        child: Container(color: Colors.white),
+      ),
+    );
+
     return Container(
-      color: const Color(0xFF0D0D0D),
+      padding: EdgeInsets.symmetric(
+          horizontal: 0.04 * MediaQuery.sizeOf(context).width),
+      color: blackColor,
       width: MediaQuery.sizeOf(context).width,
       height: sideContentRatio * MediaQuery.sizeOf(context).height,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text('You might like', style: TextStyle(color: Colors.white)),
+        const SizedBox(height: 8),
+        Container(
+          color: Colors.green,
+          height: listHeight,
+          child: movies,
+        ),
+      ]),
     );
   }
 
