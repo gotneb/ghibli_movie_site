@@ -6,19 +6,19 @@ class CustomStyle {
 
   static const movieTitle = TextStyle(
     color: primaryColor,
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: FontWeight.bold,
     letterSpacing: 1.2,
   );
 
   static final normalText = TextStyle(
     color: Colors.grey[300],
-    fontSize: 16,
+    fontSize: 15,
   );
 
   static const description = TextStyle(
     color: primaryColor,
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: FontWeight.w300,
   );
 
@@ -29,7 +29,7 @@ class CustomStyle {
 
   static const buttonText = TextStyle(
     fontSize: 18,
-    letterSpacing: 1,
+    letterSpacing: 1.5,
     fontWeight: FontWeight.bold,
   );
 
