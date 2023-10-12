@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ghibli_movie_site/components/search_field.dart';
 import 'package:ghibli_movie_site/components/small_movie_banner.dart';
 import 'package:ghibli_movie_site/custom_widgets/custom_scroll.dart';
 import 'package:ghibli_movie_site/models/movie.dart';
@@ -32,7 +33,7 @@ class HomeView extends StatelessWidget {
     );
 
     return FutureBuilder(
-      future: Api.search(titleMovie: 'howl'),
+      future: Api.search(titleMovie: 'whisper'),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return _buildBody(context, topMovie: snapshot.data![0]);
@@ -95,11 +96,14 @@ class HomeView extends StatelessWidget {
   Widget _buildTextBox(BuildContext context) {
     return Container(
       width: MediaQuery.sizeOf(context).width,
+      padding: EdgeInsets.symmetric(
+          horizontal: 0.04 * MediaQuery.sizeOf(context).width, vertical: 12),
       height: searchHeight,
       decoration: BoxDecoration(
         border: Border.all(width: 0, color: blackColor),
         color: blackColor,
       ),
+      child: const SearchField(),
     );
   }
 
@@ -123,8 +127,12 @@ class HomeView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(movie.posterTitle),
-          const SizedBox(height: 32),
+          Image.network(
+            movie.posterTitle,
+            fit: BoxFit.fitWidth,
+            height: 0.2 * height,
+          ),
+          const SizedBox(height: 24),
           stars,
           const SizedBox(height: 8),
           Text(

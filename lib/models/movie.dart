@@ -50,6 +50,9 @@ class Movie {
     );
   }
 
+  @override
+  String toString() => title;
+
   String get formatedHour {
     final hours = duration ~/60;
     int minutes = duration % 60;
