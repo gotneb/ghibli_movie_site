@@ -5,6 +5,7 @@ class Movie {
   final String originalTitle;
   final String titleImage;
   final String poster;
+  final String alternativePoster;
   final String description;
   final String promotionalImage;
   final String director;
@@ -22,6 +23,7 @@ class Movie {
     required this.alternativeTitle,
     required this.titleImage,
     required this.poster,
+    required this.alternativePoster,
     required this.description,
     required this.promotionalImage,
     required this.director,
@@ -41,6 +43,7 @@ class Movie {
       originalTitle: json['original_title'],
       titleImage: json['title_image'],
       poster: json['poster'],
+      alternativePoster: json['alternative_poster'],
       description: json['description'],
       promotionalImage: json['promotional_image'],
       director: json['director'],
