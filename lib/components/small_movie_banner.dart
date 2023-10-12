@@ -1,8 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:ghibli_movie_site/models/movie.dart';
 
 class SmallMovieBanner extends StatefulWidget {
-  const SmallMovieBanner({super.key});
+  const SmallMovieBanner({super.key, required this.movie});
+
+  final Movie movie;
 
   @override
   State<SmallMovieBanner> createState() => _SmallMovieBannerState();
@@ -23,9 +26,6 @@ class _SmallMovieBannerState extends State<SmallMovieBanner> {
 
   @override
   Widget build(BuildContext context) {
-    const url =
-        'https://occ-0-3810-1740.1.nflxso.net/dnm/api/v6/6gmvu2hxdfnQ55LZZjyzYR4kzGk/AAAABaPGYc3hhUZ8qw-OitkCVwU_Zr7IhWOhfFLx76osQUXxpt7bJuI6DV-fPpsLrN5-_39ufUQOzV11V0ilNSG2DRUnY4G_s5z23K1j.jpg?r=ac4';
-
     return AnimatedContainer(
       duration: const Duration(milliseconds: 400),
       margin: EdgeInsets.symmetric(horizontal: isInside ? 30 : 0),
@@ -45,8 +45,8 @@ class _SmallMovieBannerState extends State<SmallMovieBanner> {
           onEnter: onEnter,
           onExit: onExit,
           child: AspectRatio(
-            aspectRatio: 9 / 7,
-            child: Image.network(url, fit: BoxFit.fitHeight),
+            aspectRatio: 12 / 7,
+            child: Image.network(widget.movie.alternativePoster, fit: BoxFit.fitHeight),
           ),
         ),
       ),

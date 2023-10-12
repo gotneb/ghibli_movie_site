@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ghibli_movie_site/components/horizontal_movie_panel.dart';
 import 'package:ghibli_movie_site/components/search_field.dart';
-import 'package:ghibli_movie_site/components/small_movie_banner.dart';
-import 'package:ghibli_movie_site/custom_widgets/custom_scroll.dart';
 import 'package:ghibli_movie_site/models/movie.dart';
 import 'package:ghibli_movie_site/services/api.dart';
 import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
@@ -21,6 +20,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: blackColor,
       body: _loadData(context),
     );
   }
@@ -33,10 +33,10 @@ class HomeView extends StatelessWidget {
     );
 
     return FutureBuilder(
-      future: Api.search(titleMovie: 'whisper'),
+      future: Api.random(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return _buildBody(context, topMovie: snapshot.data![0]);
+          return _buildBody(context, topMovie: snapshot.data!);
         }
         return loadingScreen;
       },
@@ -89,7 +89,7 @@ class HomeView extends StatelessWidget {
         ]),
       ),
       // List of others movies
-      _buildMoviesList(context),
+      const HorizontalMoviePanel(ratio: sideContentRatio),
     ]);
   }
 
@@ -122,13 +122,13 @@ class HomeView extends StatelessWidget {
     );
 
     return SizedBox(
-      width: 0.35 * width,
+      width: 0.37 * width,
       height: 0.55 * height,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image.network(
-            movie.posterTitle,
+            movie.titleImage,
             fit: BoxFit.fitWidth,
             height: 0.2 * height,
           ),
@@ -136,7 +136,7 @@ class HomeView extends StatelessWidget {
           stars,
           const SizedBox(height: 8),
           Text(
-            '${movie.title} / ${movie.originalTitle}',
+            '${movie.originalTitle} (${movie.alternativeTitle})',
             style: CustomStyle.movieTitle,
           ),
           const SizedBox(height: 8),
@@ -171,46 +171,9 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget _buildMoviesList(BuildContext context) {
-    final movies = ScrollConfiguration(
-      behavior: MyCustomScrollBehavior(),
-      child: ListView.separated(
-        physics: const AlwaysScrollableScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        itemCount: 6,
-        separatorBuilder: (context, index) =>
-            SizedBox(width: 0.02 * MediaQuery.sizeOf(context).width),
-        itemBuilder: (context, index) => const SmallMovieBanner(),
-      ),
-    );
-
-    return Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: 0.04 * MediaQuery.sizeOf(context).width),
-      decoration: BoxDecoration(
-        border: Border.all(width: 0, color: blackColor),
-        color: blackColor,
-      ),
-      width: MediaQuery.sizeOf(context).width,
-      //height: sideContentRatio * MediaQuery.sizeOf(context).height,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(children: [
-          Text('You might like', style: CustomStyle.listText),
-          const Icon(Icons.chevron_right_sharp, color: Colors.white, size: 32),
-        ]),
-        const SizedBox(height: 16),
-        SizedBox(
-          height: sideContentRatio * MediaQuery.sizeOf(context).height,
-          child: movies,
-        ),
-        const SizedBox(height: 16),
-      ]),
-    );
-  }
-
   Widget _buildVideo(BuildContext context, {required Movie movie}) {
     return Image.network(
-      movie.backgroundPoster,
+      movie.promotionalImage,
       fit: BoxFit.fill,
       width: trailerRatio * MediaQuery.sizeOf(context).width,
       height: MediaQuery.sizeOf(context).height,

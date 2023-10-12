@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ghibli_movie_site/styles.dart';
 
 class SearchField extends StatefulWidget {
   const SearchField({super.key});
@@ -17,10 +18,13 @@ class _SearchFieldState extends State<SearchField> {
     final textField = TextField(
       controller: controller,
       style: const TextStyle(color: Colors.white),
+      maxLines: 1,
       onSubmitted: (value) {
         searchTerm = value;
       },
       decoration: InputDecoration(
+        hintStyle: CustomStyle.hintText,
+        hintText: "I'm looking for...",
         fillColor: const Color(0xFF202020),
         filled: true,
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -50,7 +54,7 @@ class _SearchFieldState extends State<SearchField> {
               topLeft: Radius.circular(12),
               bottomLeft: Radius.circular(12),
             )),
-        child: Icon(Icons.search, color: Colors.white, fill: 1));
+        child: const Icon(Icons.search_sharp, color: Colors.white, fill: 1));
 
     return Stack(
       children: [

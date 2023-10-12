@@ -23,6 +23,11 @@ class CustomStyle {
     fontWeight: FontWeight.w300,
   );
 
+  static final hintText = GoogleFonts.poppins(
+    color: Colors.grey,
+    fontSize: 16,
+  );
+
   static final listText = GoogleFonts.poppins(
     color: primaryColor,
     fontSize: 20,
