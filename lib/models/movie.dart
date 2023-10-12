@@ -1,11 +1,12 @@
 class Movie {
   final String id;
   final String title;
+  final String alternativeTitle;
   final String originalTitle;
-  final String posterTitle;
+  final String titleImage;
   final String poster;
   final String description;
-  final String backgroundPoster;
+  final String promotionalImage;
   final String director;
   final int year;
   final int duration;
@@ -18,10 +19,11 @@ class Movie {
     required this.id,
     required this.title,
     required this.originalTitle,
-    required this.posterTitle,
+    required this.alternativeTitle,
+    required this.titleImage,
     required this.poster,
     required this.description,
-    required this.backgroundPoster,
+    required this.promotionalImage,
     required this.director,
     required this.year,
     required this.duration,
@@ -35,11 +37,12 @@ class Movie {
     return Movie._(
       id: json['id'],
       title: json['title'],
+      alternativeTitle: json['alternative_title'],
       originalTitle: json['original_title'],
-      posterTitle: json['poster_title'],
+      titleImage: json['title_image'],
       poster: json['poster'],
       description: json['description'],
-      backgroundPoster: json['background_poster'],
+      promotionalImage: json['promotional_image'],
       director: json['director'],
       year: json['release_year'].toInt(),
       duration: json['duration'].toInt(),
