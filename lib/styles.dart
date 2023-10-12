@@ -19,8 +19,8 @@ class CustomStyle {
 
   static final description = GoogleFonts.poppins(
     color: primaryColor,
-    fontSize: 15,
-    fontWeight: FontWeight.w200,
+    fontSize: 16,
+    fontWeight: FontWeight.w300,
   );
 
   static final listText = GoogleFonts.poppins(
