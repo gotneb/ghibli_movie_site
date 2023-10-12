@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'package:ghibli_movie_site/models/movie.dart';
-import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
   static const path = 'studio-ghibli-movies-api.onrender.com';
-  static final dio = Dio();
 
   static Future<List<Movie>> search({required String titleMovie}) async {
     final url = '/movies/search/$titleMovie';

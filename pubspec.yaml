@@ -38,7 +38,6 @@ dependencies:
   chewie: ^1.7.1
   video_player: ^2.7.2
   http: ^1.1.0
-  dio: ^5.3.3
   smooth_star_rating_null_safety: ^1.0.4+2
   google_fonts: ^6.1.0
 
