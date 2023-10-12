@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomStyle {
   static const primaryColor = Colors.white;
   static final mainColor = Colors.redAccent[700];
+  static const blackColor = Color(0xFF0D0D0D);
 
   static final movieTitle = GoogleFonts.poppins(
     color: primaryColor,

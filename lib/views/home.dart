@@ -15,12 +15,10 @@ class HomeView extends StatelessWidget {
   static const sideContentRatio = 0.2;
   static const trailerRatio = 0.65;
 
-  static const blackColor = Color(0xFF0D0D0D);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: CustomStyle.blackColor,
       body: _loadData(context),
     );
   }
@@ -29,7 +27,7 @@ class HomeView extends StatelessWidget {
     const loadingScreen = Center(
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [CircularProgressIndicator(), Text('Loading')]),
+          children: [CircularProgressIndicator()]),
     );
 
     return FutureBuilder(
@@ -51,10 +49,10 @@ class HomeView extends StatelessWidget {
       width: screenWidth,
       height: mainContentRatio * screenHeight,
       decoration: BoxDecoration(
-        border: Border.all(width: 0, color: blackColor),
-        color: blackColor,
+        border: Border.all(width: 0, color: CustomStyle.blackColor),
+        color: CustomStyle.blackColor,
         gradient: const LinearGradient(
-            colors: [blackColor, Colors.transparent],
+            colors: [CustomStyle.blackColor, Colors.transparent],
             begin: Alignment.topLeft,
             end: Alignment.topRight,
             stops: [.35, .6]),
@@ -100,8 +98,8 @@ class HomeView extends StatelessWidget {
           horizontal: 0.04 * MediaQuery.sizeOf(context).width, vertical: 12),
       height: searchHeight,
       decoration: BoxDecoration(
-        border: Border.all(width: 0, color: blackColor),
-        color: blackColor,
+        border: Border.all(width: 0, color: CustomStyle.blackColor),
+        color: CustomStyle.blackColor,
       ),
       child: const SearchField(),
     );
