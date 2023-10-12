@@ -157,11 +157,11 @@ class HomeView extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {},
               style: CustomStyle.mainButtonStyle,
-              child: const Row(
+              child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(Icons.play_arrow_rounded, size: 32),
-                    SizedBox(width: 12),
+                    const Icon(Icons.play_arrow_rounded, size: 32),
+                    const SizedBox(width: 12),
                     Text('WATCH', style: CustomStyle.buttonText),
                   ]),
             ),
@@ -194,9 +194,9 @@ class HomeView extends StatelessWidget {
       width: MediaQuery.sizeOf(context).width,
       //height: sideContentRatio * MediaQuery.sizeOf(context).height,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Row(children: [
+        Row(children: [
           Text('You might like', style: CustomStyle.listText),
-          Icon(Icons.chevron_right_sharp, color: Colors.white, size: 32),
+          const Icon(Icons.chevron_right_sharp, color: Colors.white, size: 32),
         ]),
         const SizedBox(height: 16),
         SizedBox(
