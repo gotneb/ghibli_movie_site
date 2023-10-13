@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ghibli_movie_site/models/movie.dart';
+import 'package:ghibli_movie_site/styles.dart';
 import 'package:image_pixels/image_pixels.dart';
 
 class MovieDetail extends StatelessWidget {
@@ -13,10 +14,57 @@ class MovieDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [
-        _buildBackgroundImage(context),
-        _buildMainContent(context),
-      ]),
+      body: ListView(
+        children: [
+          Stack(children: [
+            _buildBackgroundImage(context),
+            _buildMainContent(context),
+          ]),
+          _buildGallery(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGallery(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
+
+    final gallery = movie.gallery.map((img) {
+      return Image.network(img, fit: BoxFit.fill);
+    }).toList();
+
+    final gridGallery = GridView.count(
+      crossAxisCount: 3,
+      childAspectRatio: 12 / 7,
+      mainAxisSpacing: 0.01 * width,
+      crossAxisSpacing: 0.01 * width,
+      children: gallery,
+    );
+
+    final padding = 0.04 * width;
+
+    return SizedBox(
+      width: width,
+      height: height,
+      child: Stack(
+        children: [
+          ImagePixels(
+            imageProvider: NetworkImage(movie.promotionalImage),
+            builder: (context, img) {
+              return Container(
+                width: width,
+                height: height,
+                color: loadImgColor(img),
+              );
+            },
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(padding, 0, padding, 20),
+            child: gridGallery,
+          ),
+        ],
+      ),
     );
   }
 
@@ -41,9 +89,8 @@ class MovieDetail extends StatelessWidget {
         .map((genre) => Container(
               margin: EdgeInsets.only(right: 0.01 * width),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-              decoration: ShapeDecoration(
-                shape:
-                    const StadiumBorder(side: BorderSide(color: Colors.white)),
+              decoration: const ShapeDecoration(
+                shape: StadiumBorder(side: BorderSide(color: Colors.white)),
               ),
               child: Text(genre),
             ))
@@ -129,9 +176,7 @@ class MovieDetail extends StatelessWidget {
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
           colors: [
-            img.hasImage
-                ? img.pixelColorAtAlignment!(Alignment.bottomCenter)
-                : Colors.transparent,
+            loadImgColor(img),
             Colors.transparent,
           ],
           stops: const [.1, 1],
@@ -155,5 +200,11 @@ class MovieDetail extends StatelessWidget {
             ))
       ]),
     );
+  }
+
+  Color loadImgColor(ImgDetails img) {
+    return img.hasImage
+        ? img.pixelColorAtAlignment!(Alignment.bottomCenter)
+        : Colors.transparent;
   }
 }
