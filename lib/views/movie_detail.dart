@@ -1,0 +1,159 @@
+import 'package:flutter/material.dart';
+import 'package:ghibli_movie_site/models/movie.dart';
+import 'package:image_pixels/image_pixels.dart';
+
+class MovieDetail extends StatelessWidget {
+  const MovieDetail({
+    super.key,
+    required this.movie,
+  });
+
+  final Movie movie;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(children: [
+        _buildBackgroundImage(context),
+        _buildMainContent(context),
+      ]),
+    );
+  }
+
+  Widget _buildMainContent(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
+
+    final padding = 0.04 * width;
+
+    final title = Image.network(
+      movie.titleImage,
+      width: 0.3 * width,
+      fit: BoxFit.fitWidth,
+    );
+
+    final poster = ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Image.network(movie.poster, height: 0.3 * height),
+    );
+
+    final genresBox = movie.genres
+        .map((genre) => Container(
+              margin: EdgeInsets.only(right: 0.01 * width),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              decoration: ShapeDecoration(
+                shape:
+                    const StadiumBorder(side: BorderSide(color: Colors.white)),
+              ),
+              child: Text(genre),
+            ))
+        .toList();
+
+    final about =
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text('Dir. ${movie.director}'),
+      const SizedBox(height: 8),
+      SizedBox(
+        width: 0.6 * width,
+        child: Text(movie.description),
+      ),
+      const SizedBox(height: 12),
+      Row(children: genresBox),
+    ]);
+
+    final rating = SizedBox(
+      width: 0.1 * width,
+      height: 0.1 * width,
+      child: Stack(
+        children: [
+          SizedBox(
+            width: 0.1 * width,
+            height: 0.1 * width,
+            child: CircularProgressIndicator(
+              color: Colors.yellow,
+              backgroundColor: Colors.grey[850],
+              strokeWidth: 12,
+              value: movie.score / 10,
+            ),
+          ),
+          Center(child: Text((movie.score / 2).toStringAsFixed(1))),
+        ],
+      ),
+    );
+
+    return Container(
+      padding: EdgeInsets.fromLTRB(padding, 0, 0, 12),
+      width: width,
+      height: height,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            title,
+            const SizedBox(height: 24),
+            Text('${movie.year} | ${movie.formatedHour}'),
+            const SizedBox(height: 16),
+            Text('${movie.originalTitle} (${movie.alternativeTitle})'),
+            const SizedBox(height: 4),
+            Container(width: width, height: 1, color: Colors.grey),
+            const SizedBox(height: 32),
+            Row(children: [
+              poster,
+              SizedBox(width: 0.02 * width),
+              about,
+              const Spacer(),
+              rating,
+              const Spacer(),
+            ]),
+            const Center(
+                child: Column(children: [
+              Text('GALLERY'),
+              Icon(Icons.keyboard_arrow_down_rounded),
+            ])),
+          ]),
+    );
+  }
+
+  Widget _buildBackgroundImage(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
+
+    final image = Image.network(
+      movie.promotionalImage,
+      fit: BoxFit.fill,
+      width: width,
+      height: height,
+    );
+
+    gradient(ImgDetails img) => LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          colors: [
+            img.hasImage
+                ? img.pixelColorAtAlignment!(Alignment.bottomCenter)
+                : Colors.transparent,
+            Colors.transparent,
+          ],
+          stops: const [.1, 1],
+        );
+
+    return SizedBox(
+      width: width,
+      height: height,
+      child: Stack(children: [
+        image,
+        Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              height: 0.5 * height,
+              child: ImagePixels(
+                  imageProvider: NetworkImage(movie.promotionalImage),
+                  builder: (context, img) {
+                    return Container(
+                        decoration: BoxDecoration(gradient: gradient(img)));
+                  }),
+            ))
+      ]),
+    );
+  }
+}
