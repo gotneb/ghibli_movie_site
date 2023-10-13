@@ -22,7 +22,11 @@ class HorizontalMoviePanel extends StatelessWidget {
           movies.shuffle();
           return _buildBody(context, movies: movies.getRange(0, 5).toList());
         }
-        return const CircularProgressIndicator();
+        return SizedBox(
+          width: MediaQuery.sizeOf(context).width,
+          height: 0.2 * MediaQuery.sizeOf(context).height,
+          child: const Center(child: CircularProgressIndicator()),
+        );
       },
     );
   }
