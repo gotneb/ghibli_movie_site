@@ -31,7 +31,10 @@ class MovieDetail extends StatelessWidget {
     final height = MediaQuery.sizeOf(context).height;
 
     final gallery = movie.gallery.map((img) {
-      return Image.network(img, fit: BoxFit.fill);
+      return Material(
+        elevation: 12,
+        child: Image.network(img, fit: BoxFit.fill),
+      );
     }).toList();
 
     final gridGallery = GridView.count(
@@ -80,9 +83,15 @@ class MovieDetail extends StatelessWidget {
       fit: BoxFit.fitWidth,
     );
 
-    final poster = ClipRRect(
+    final poster = Material(
+      elevation: 12,
       borderRadius: BorderRadius.circular(12),
-      child: Image.network(movie.poster, height: 0.3 * height),
+      color: Colors.transparent,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child:
+            Image.network(movie.poster, height: 0.3 * height, fit: BoxFit.fill),
+      ),
     );
 
     final genresBox = movie.genres
@@ -92,21 +101,23 @@ class MovieDetail extends StatelessWidget {
               decoration: const ShapeDecoration(
                 shape: StadiumBorder(side: BorderSide(color: Colors.white)),
               ),
-              child: Text(genre),
+              child: Text(genre, style: CustomStyle.description2),
             ))
         .toList();
 
-    final about =
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text('Dir. ${movie.director}'),
-      const SizedBox(height: 8),
-      SizedBox(
-        width: 0.6 * width,
-        child: Text(movie.description),
-      ),
-      const SizedBox(height: 12),
-      Row(children: genresBox),
-    ]);
+    final about = Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(movie.title, style: CustomStyle.movieTitle2),
+          const SizedBox(height: 8),
+          SizedBox(
+            width: 0.5 * width,
+            child: Text(movie.description, style: CustomStyle.description2),
+          ),
+          const SizedBox(height: 12),
+          Row(children: genresBox),
+        ]);
 
     final rating = SizedBox(
       width: 0.1 * width,
@@ -123,7 +134,11 @@ class MovieDetail extends StatelessWidget {
               value: movie.score / 10,
             ),
           ),
-          Center(child: Text((movie.score / 2).toStringAsFixed(1))),
+          Center(
+              child: Text(
+            (movie.score).toStringAsFixed(1),
+            style: CustomStyle.ratingText,
+          )),
         ],
       ),
     );
@@ -138,9 +153,15 @@ class MovieDetail extends StatelessWidget {
           children: [
             title,
             const SizedBox(height: 24),
-            Text('${movie.year} | ${movie.formatedHour}'),
+            Text(
+              '${movie.year} | ${movie.formatedHour}',
+              style: CustomStyle.description2,
+            ),
             const SizedBox(height: 16),
-            Text('${movie.originalTitle} (${movie.alternativeTitle})'),
+            Text(
+              '${movie.originalTitle} (${movie.alternativeTitle})',
+              style: CustomStyle.movieTitle3,
+            ),
             const SizedBox(height: 4),
             Container(width: width, height: 1, color: Colors.grey),
             const SizedBox(height: 32),
@@ -152,10 +173,13 @@ class MovieDetail extends StatelessWidget {
               rating,
               const Spacer(),
             ]),
-            const Center(
+            Center(
                 child: Column(children: [
-              Text('GALLERY'),
-              Icon(Icons.keyboard_arrow_down_rounded),
+              Text('GALLERY', style: CustomStyle.galleryText),
+              const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: Colors.white,
+              ),
             ])),
           ]),
     );
@@ -190,7 +214,7 @@ class MovieDetail extends StatelessWidget {
         Align(
             alignment: Alignment.bottomCenter,
             child: SizedBox(
-              height: 0.5 * height,
+              height: 0.7 * height,
               child: ImagePixels(
                   imageProvider: NetworkImage(movie.promotionalImage),
                   builder: (context, img) {

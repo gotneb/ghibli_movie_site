@@ -5,6 +5,12 @@ class CustomStyle {
   static const primaryColor = Colors.white;
   static final mainColor = Colors.redAccent[700];
   static const blackColor = Color(0xFF0D0D0D);
+  static const shadows = [
+    Shadow(
+      blurRadius: 3,
+      color: Colors.black,
+    )
+  ];
 
   static final movieTitle = GoogleFonts.poppins(
     color: primaryColor,
@@ -18,10 +24,53 @@ class CustomStyle {
     fontSize: 15,
   );
 
+  static final normalText2 = GoogleFonts.poppins(
+    color: Colors.grey[300],
+    fontSize: 15,
+    shadows: shadows,
+  );
+
   static final description = GoogleFonts.poppins(
     color: primaryColor,
     fontSize: 16,
     fontWeight: FontWeight.w300,
+  );
+
+  static final ratingText = GoogleFonts.poppins(
+    color: primaryColor,
+    fontSize: 36,
+    fontWeight: FontWeight.bold,
+    shadows: shadows,
+  );
+
+  static final galleryText = GoogleFonts.poppins(
+    color: primaryColor,
+    fontSize: 20,
+    letterSpacing: 1.5,
+    shadows: shadows,
+  );
+
+  static final description2 = GoogleFonts.poppins(
+    color: primaryColor,
+    fontSize: 15,
+    fontWeight: FontWeight.w300,
+    shadows: shadows,
+  );
+
+  static final movieTitle2 = GoogleFonts.poppins(
+    color: primaryColor,
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+    letterSpacing: 1.5,
+    shadows: const [Shadow(blurRadius: 2, color: Colors.black, offset: Offset(1, 1))],
+  );
+
+  static final movieTitle3 = GoogleFonts.poppins(
+    color: primaryColor,
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+    letterSpacing: 1.5,
+    shadows: shadows,
   );
 
   static final hintText = GoogleFonts.poppins(
