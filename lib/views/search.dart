@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ghibli_movie_site/models/movie.dart';
 import 'package:ghibli_movie_site/services/api.dart';
 import 'package:ghibli_movie_site/styles.dart';
+import 'package:ghibli_movie_site/views/movie_detail.dart';
 
 class SearchView extends StatelessWidget {
   const SearchView({
@@ -64,9 +65,20 @@ class SearchView extends StatelessWidget {
   }
 
   Widget _buildBanner(BuildContext context, {required Movie movie}) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: Image.network(movie.poster, fit: BoxFit.fill),
+    return GestureDetector(
+      onTap: () => _loadMovieScreen(context, movie: movie),
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Image.network(movie.poster, fit: BoxFit.fill),
+      ),
     );
+  }
+
+  void _loadMovieScreen(BuildContext context, {required Movie movie}) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MovieDetail(movie: movie),
+        ));
   }
 }

@@ -93,6 +93,6 @@ class CustomStyle {
     backgroundColor: mainColor,
     foregroundColor: primaryColor,
     elevation: 24,
-    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
   );
 }

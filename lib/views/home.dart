@@ -3,6 +3,7 @@ import 'package:ghibli_movie_site/components/horizontal_movie_panel.dart';
 import 'package:ghibli_movie_site/components/search_field.dart';
 import 'package:ghibli_movie_site/models/movie.dart';
 import 'package:ghibli_movie_site/services/api.dart';
+import 'package:ghibli_movie_site/views/movie_detail.dart';
 import 'package:ghibli_movie_site/views/search.dart';
 import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
 
@@ -174,7 +175,7 @@ class _HomeViewState extends State<HomeView> {
           const SizedBox(height: 24),
           FittedBox(
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () => _loadMovieScreen(context, movie: movie),
               style: CustomStyle.mainButtonStyle,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -204,5 +205,13 @@ class _HomeViewState extends State<HomeView> {
       hasSearched = true;
       searchContent = SearchView(searchTerm: searchTerm);
     });
+  }
+
+  void _loadMovieScreen(BuildContext context, {required Movie movie}) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MovieDetail(movie: movie),
+        ));
   }
 }

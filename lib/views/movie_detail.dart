@@ -165,7 +165,7 @@ class MovieDetail extends StatelessWidget {
             )
             .moveY(
               begin: 0,
-              end: -8,
+              end: -16,
               duration: time,
               curve: Curves.ease
             ));
