@@ -20,7 +20,7 @@ class HorizontalMoviePanel extends StatelessWidget {
         if (snapshot.hasData) {
           final movies = snapshot.data!;
           movies.shuffle();
-          return _buildBody(context, movies: movies);
+          return _buildBody(context, movies: movies.getRange(0, 5).toList());
         }
         return const CircularProgressIndicator();
       },

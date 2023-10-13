@@ -9,9 +9,11 @@ class Api {
     final url = '/movies/search/$titleMovie';
     final response = await http.get(Uri.https(path, url));
 
+    final List<Movie> movies = [];
+    if (response.statusCode != 200) { return movies; }
+
     List<dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
 
-    final List<Movie> movies = [];
     for (var data in json) {
       try {
         final movie = Movie.fromJson(data);
@@ -20,7 +22,6 @@ class Api {
         print('Error while processing movie: $e');
       }
     }
-
     return movies;
   }
 

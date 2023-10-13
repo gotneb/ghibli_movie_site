@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:ghibli_movie_site/styles.dart';
 
 class SearchField extends StatefulWidget {
-  const SearchField({super.key});
+  const SearchField({
+    super.key,
+    required this.onSubmitted,
+  });
+
+  final void Function(String) onSubmitted;
 
   @override
   State<SearchField> createState() => _SearchFieldState();
@@ -11,8 +16,6 @@ class SearchField extends StatefulWidget {
 class _SearchFieldState extends State<SearchField> {
   final controller = TextEditingController();
 
-  String searchTerm = '';
-
   @override
   Widget build(BuildContext context) {
     final textField = TextField(
@@ -20,8 +23,13 @@ class _SearchFieldState extends State<SearchField> {
       style: const TextStyle(color: Colors.white),
       maxLines: 1,
       onSubmitted: (value) {
-        searchTerm = value;
+        if (value.isEmpty) {
+          return;
+        }
+
+        widget.onSubmitted(value);
       },
+      enableSuggestions: true,
       decoration: InputDecoration(
         hintStyle: CustomStyle.hintText,
         hintText: "I'm looking for...",
@@ -34,6 +42,13 @@ class _SearchFieldState extends State<SearchField> {
             bottomRight: Radius.circular(12),
           ),
           borderSide: BorderSide(color: Colors.grey[400]!, width: .5),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          ),
+          borderSide: BorderSide(color: CustomStyle.mainColor!, width: 2),
         ),
         border: OutlineInputBorder(
           borderRadius: const BorderRadius.only(

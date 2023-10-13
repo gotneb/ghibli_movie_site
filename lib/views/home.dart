@@ -3,11 +3,12 @@ import 'package:ghibli_movie_site/components/horizontal_movie_panel.dart';
 import 'package:ghibli_movie_site/components/search_field.dart';
 import 'package:ghibli_movie_site/models/movie.dart';
 import 'package:ghibli_movie_site/services/api.dart';
+import 'package:ghibli_movie_site/views/search.dart';
 import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
 
 import 'package:ghibli_movie_site/styles.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
   static const searchHeight = 65.0;
@@ -16,14 +17,34 @@ class HomeView extends StatelessWidget {
   static const trailerRatio = 0.65;
 
   @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  var hasSearched = false;
+  Widget searchContent = const Placeholder();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: CustomStyle.blackColor,
+        leading: IconButton(
+          onPressed: () => setState(() {
+            hasSearched = false;
+          }),
+          icon: const Icon(Icons.home_rounded, size: 32, color: CustomStyle.primaryColor),
+        ),
+        title: _buildTextBox(context),
+        titleSpacing: 0,
+      ),
       backgroundColor: CustomStyle.blackColor,
-      body: _loadData(context),
+      body: hasSearched ? searchContent : loadMainScreen(context),
+      // body: SearchView(searchTerm: 'whisper'),
     );
   }
 
-  Widget _loadData(BuildContext context) {
+  Widget loadMainScreen(BuildContext context) {
     const loadingScreen = Center(
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -47,7 +68,7 @@ class HomeView extends StatelessWidget {
 
     final blackGradient = Container(
       width: screenWidth,
-      height: mainContentRatio * screenHeight,
+      height: HomeView.mainContentRatio * screenHeight,
       decoration: BoxDecoration(
         border: Border.all(width: 0, color: CustomStyle.blackColor),
         color: CustomStyle.blackColor,
@@ -76,10 +97,10 @@ class HomeView extends StatelessWidget {
     );
 
     return ListView(children: [
-      _buildTextBox(context),
+      const SizedBox(height: 8),
       SizedBox(
         width: screenWidth,
-        height: mainContentRatio * screenHeight,
+        height: HomeView.mainContentRatio * screenHeight,
         child: Stack(children: [
           trailer,
           blackGradient,
@@ -87,21 +108,21 @@ class HomeView extends StatelessWidget {
         ]),
       ),
       // List of others movies
-      const HorizontalMoviePanel(ratio: sideContentRatio),
+      const HorizontalMoviePanel(ratio: HomeView.sideContentRatio),
     ]);
   }
 
   Widget _buildTextBox(BuildContext context) {
     return Container(
       width: MediaQuery.sizeOf(context).width,
-      padding: EdgeInsets.symmetric(
-          horizontal: 0.04 * MediaQuery.sizeOf(context).width, vertical: 12),
-      height: searchHeight,
+      padding: EdgeInsets.fromLTRB(
+          0, 12, 0.04 * MediaQuery.sizeOf(context).width, 12),
+      height: HomeView.searchHeight,
       decoration: BoxDecoration(
         border: Border.all(width: 0, color: CustomStyle.blackColor),
         color: CustomStyle.blackColor,
       ),
-      child: const SearchField(),
+      child: SearchField(onSubmitted: onSubmitted),
     );
   }
 
@@ -111,11 +132,11 @@ class HomeView extends StatelessWidget {
       onRatingChanged: (_) {},
       starCount: 5,
       rating: movie.score / 2,
-      size: 20.0,
+      size: 24.0,
       filledIconData: Icons.star_rounded,
       halfFilledIconData: Icons.star_half_rounded,
-      color: Colors.white,
-      borderColor: Colors.white,
+      color: CustomStyle.primaryColor,
+      borderColor: CustomStyle.primaryColor,
       spacing: 2.0,
     );
 
@@ -148,7 +169,7 @@ class HomeView extends StatelessWidget {
             movie.description,
             style: CustomStyle.description,
             overflow: TextOverflow.ellipsis,
-            maxLines: 4,
+            maxLines: 2,
           )),
           const SizedBox(height: 24),
           FittedBox(
@@ -160,7 +181,7 @@ class HomeView extends StatelessWidget {
                   children: [
                     const Icon(Icons.play_arrow_rounded, size: 32),
                     const SizedBox(width: 12),
-                    Text('WATCH', style: CustomStyle.buttonText),
+                    Text('Play', style: CustomStyle.buttonText),
                   ]),
             ),
           ),
@@ -173,8 +194,15 @@ class HomeView extends StatelessWidget {
     return Image.network(
       movie.promotionalImage,
       fit: BoxFit.fill,
-      width: trailerRatio * MediaQuery.sizeOf(context).width,
+      width: HomeView.trailerRatio * MediaQuery.sizeOf(context).width,
       height: MediaQuery.sizeOf(context).height,
     );
+  }
+
+  void onSubmitted(String searchTerm) {
+    setState(() {
+      hasSearched = true;
+      searchContent = SearchView(searchTerm: searchTerm);
+    });
   }
 }
