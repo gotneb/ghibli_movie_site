@@ -41,6 +41,7 @@ dependencies:
   smooth_star_rating_null_safety: ^1.0.4+2
   google_fonts: ^6.1.0
   image_pixels: ^3.0.1
+  simple_circular_progress_bar: ^1.0.2
 
 dev_dependencies:
   flutter_test:

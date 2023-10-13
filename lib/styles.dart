@@ -68,7 +68,7 @@ class CustomStyle {
   static final movieTitle3 = GoogleFonts.poppins(
     color: primaryColor,
     fontSize: 16,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w300,
     letterSpacing: 1.5,
     shadows: shadows,
   );

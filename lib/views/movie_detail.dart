@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ghibli_movie_site/models/movie.dart';
 import 'package:ghibli_movie_site/styles.dart';
 import 'package:image_pixels/image_pixels.dart';
+import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 
 class MovieDetail extends StatelessWidget {
   const MovieDetail({
@@ -127,11 +128,15 @@ class MovieDetail extends StatelessWidget {
           SizedBox(
             width: 0.1 * width,
             height: 0.1 * width,
-            child: CircularProgressIndicator(
-              color: Colors.yellow,
-              backgroundColor: Colors.grey[850],
-              strokeWidth: 12,
-              value: movie.score / 10,
+            child: SimpleCircularProgressBar(
+              size: 0.1 * width,
+              backStrokeWidth: 12,
+              progressStrokeWidth: 18,
+              backColor: Colors.grey[850]!,
+              animationDuration: 6,
+              maxValue: 10.0,
+              progressColors: const [Colors.yellow],
+              valueNotifier: ValueNotifier<double>(movie.score),
             ),
           ),
           Center(
