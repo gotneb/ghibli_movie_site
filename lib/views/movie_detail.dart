@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:ghibli_movie_site/models/movie.dart';
 import 'package:ghibli_movie_site/styles.dart';
 import 'package:image_pixels/image_pixels.dart';
@@ -148,6 +149,27 @@ class MovieDetail extends StatelessWidget {
       ),
     );
 
+    const time = Duration(milliseconds: 2000);
+    final galleryText = Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(width: width),
+          Text('GALLERY', style: CustomStyle.galleryText),
+          const Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: Colors.white,
+          ),
+        ]
+            .animate(
+              onPlay: (controller) => controller.repeat(),
+            )
+            .moveY(
+              begin: 0,
+              end: -8,
+              duration: time,
+              curve: Curves.ease
+            ));
+
     return Container(
       padding: EdgeInsets.fromLTRB(padding, 0, 0, 12),
       width: width,
@@ -178,14 +200,7 @@ class MovieDetail extends StatelessWidget {
               rating,
               const Spacer(),
             ]),
-            Center(
-                child: Column(children: [
-              Text('GALLERY', style: CustomStyle.galleryText),
-              const Icon(
-                Icons.keyboard_arrow_down_rounded,
-                color: Colors.white,
-              ),
-            ])),
+            galleryText,
           ]),
     );
   }
