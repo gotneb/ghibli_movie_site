@@ -5,6 +5,7 @@ class CustomStyle {
   static const primaryColor = Colors.white;
   static final mainColor = Colors.redAccent[700];
   static const blackColor = Color(0xFF0D0D0D);
+  static const greyColor = Color(0xFF202020);
   static const shadows = [
     Shadow(
       blurRadius: 3,
@@ -92,6 +93,15 @@ class CustomStyle {
   static final mainButtonStyle = ElevatedButton.styleFrom(
     backgroundColor: mainColor,
     foregroundColor: primaryColor,
+    elevation: 24,
+    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+  );
+
+  static final mainButtonStyle2 = ElevatedButton.styleFrom(
+    backgroundColor: blackColor,
+    surfaceTintColor: blackColor,
+    foregroundColor: primaryColor,
+    side: const BorderSide(color: primaryColor, width: 2),
     elevation: 24,
     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
   );
