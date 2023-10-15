@@ -19,7 +19,7 @@ class Footer extends StatelessWidget {
     final width = MediaQuery.sizeOf(context).width;
 
     return Container(
-      color: Colors.white,
+      color: Colors.white70,
       width: MediaQuery.sizeOf(context).width,
       padding: EdgeInsets.symmetric(horizontal: 0.04 * width),
       height: 50,
@@ -38,21 +38,23 @@ class Footer extends StatelessWidget {
   }
 
   Widget _buildRow(Color color) {
-    final icons = [
-      'https://i.postimg.cc/vTKS7Y1N/instagram.png',
-      'https://i.postimg.cc/m2cnLHJf/pinterest.png',
-      'https://i.postimg.cc/dQNXcBWj/twitter.png',
-    ]
-        .map((link) => GestureDetector(
-              onTap: () => openLink(link: _pinterest),
-              child: CircleAvatar(
-                  backgroundColor: color,
-                  radius: 12,
-                  child: Padding(
-                    padding: const EdgeInsets.all(4),
-                    child:
-                        Image.network(link, filterQuality: FilterQuality.low),
-                  )),
+    final icons = {
+      'https://i.postimg.cc/vTKS7Y1N/instagram.png': _insta,
+      'https://i.postimg.cc/m2cnLHJf/pinterest.png': _pinterest,
+      'https://i.postimg.cc/dQNXcBWj/twitter.png': _twitter,
+    }
+        .entries
+        .map((entry) => GestureDetector(
+              onTap: () => openLink(link: entry.value),
+              child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: CircleAvatar(
+                      backgroundColor: color,
+                      radius: 12,
+                      child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Image.network(entry.key,
+                              filterQuality: FilterQuality.low)))),
             ))
         .toList();
 
