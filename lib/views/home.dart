@@ -24,7 +24,7 @@ class _HomeViewState extends State<HomeView> {
   Widget searchContent = const Placeholder();
 
   var showTrailer = false;
-  late Movie movie;
+  var movies = <Movie>[];
 
   @override
   Widget build(BuildContext context) {
@@ -55,31 +55,37 @@ class _HomeViewState extends State<HomeView> {
     );
 
     if (showTrailer) {
-      return _buildBody(context, topMovie: movie);
+      return _buildBody(context);
     }
 
     return FutureBuilder(
-      future: Api.random(),
+      // I know loading all cost a lot...
+      // But I'm too lazy to implement a new route for the api ;)
+      future: Api.all(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          movie = snapshot.data!;
-          return _buildBody(context, topMovie: movie);
+          movies = snapshot.data!;
+          movies.shuffle();
+          return _buildBody(context);
         }
         return loadingScreen;
       },
     );
   }
 
-  Widget _buildBody(BuildContext context, {required Movie topMovie}) {
+  Widget _buildBody(BuildContext context) {
     return ListView(children: [
       const SizedBox(height: 8),
       MainContent(
         ratio: HomeView.mainContentRatio,
-        movie: movie,
+        movie: movies[0],
         trailerRatio: HomeView.trailerRatio,
       ),
       // List of others movies
-      const HorizontalMoviePanel(ratio: HomeView.sideContentRatio),
+      HorizontalMoviePanel(
+        ratio: HomeView.sideContentRatio,
+        movies: movies.getRange(1, 6).toList(),
+      ),
     ]);
   }
 

@@ -2,33 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:ghibli_movie_site/components/small_movie_banner.dart';
 import 'package:ghibli_movie_site/custom_widgets/custom_scroll.dart';
 import 'package:ghibli_movie_site/models/movie.dart';
-import 'package:ghibli_movie_site/services/api.dart';
 import 'package:ghibli_movie_site/styles.dart';
 
 class HorizontalMoviePanel extends StatelessWidget {
-  const HorizontalMoviePanel({super.key, required this.ratio});
+  const HorizontalMoviePanel({super.key, required this.ratio, required this.movies});
 
   final double ratio;
+  final List<Movie> movies;
 
   static const blackColor = Color(0xFF0D0D0D);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Api.all(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final movies = snapshot.data!;
-          movies.shuffle();
-          return _buildBody(context, movies: movies.getRange(0, 5).toList());
-        }
-        return SizedBox(
-          width: MediaQuery.sizeOf(context).width,
-          height: 0.2 * MediaQuery.sizeOf(context).height,
-          child: const Center(child: CircularProgressIndicator()),
-        );
-      },
-    );
+    return _buildBody(context, movies: movies);
   }
 
   Widget _buildBody(BuildContext context, {required List<Movie> movies}) {
