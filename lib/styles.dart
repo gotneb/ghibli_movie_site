@@ -51,25 +51,25 @@ class CustomStyle {
     shadows: shadows,
   );
 
-  static final description2 = GoogleFonts.poppins(
+  static final description2 = GoogleFonts.nunito(
     color: primaryColor,
-    fontSize: 15,
-    fontWeight: FontWeight.w300,
+    fontSize: 18,
+    //fontWeight: FontWeight.w300,
     shadows: shadows,
   );
 
-  static final movieTitle2 = GoogleFonts.poppins(
+  static final movieTitle2 = GoogleFonts.nunito(
     color: primaryColor,
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: FontWeight.bold,
     letterSpacing: 1.5,
     shadows: const [Shadow(blurRadius: 2, color: Colors.black, offset: Offset(1, 1))],
   );
 
-  static final movieTitle3 = GoogleFonts.poppins(
+  static final movieTitle3 = GoogleFonts.nunito(
     color: primaryColor,
     fontSize: 16,
-    fontWeight: FontWeight.w300,
+    fontWeight: FontWeight.w400,
     letterSpacing: 1.5,
     shadows: shadows,
   );

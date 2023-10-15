@@ -25,7 +25,7 @@ class SearchView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.network(
-                      'https://i.pinimg.com/originals/ab/5d/39/ab5d39528bbe450927c3f07edc37c95c.png',
+                      'https://i.postimg.cc/FKdyTp0W/emo.png',
                       width: 0.1 * MediaQuery.sizeOf(context).width,
                     ),
                     const SizedBox(height: 12),

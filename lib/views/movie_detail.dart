@@ -114,7 +114,7 @@ class MovieDetail extends StatelessWidget {
           Text(movie.title, style: CustomStyle.movieTitle2),
           const SizedBox(height: 8),
           SizedBox(
-            width: 0.5 * width,
+            width: 0.35 * width,
             child: Text(movie.description, style: CustomStyle.description2),
           ),
           const SizedBox(height: 12),
