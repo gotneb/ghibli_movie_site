@@ -76,7 +76,7 @@ class MovieDetail extends StatelessWidget {
             builder: (context, img) {
               return Container(
                 width: width,
-                height: 1.1 * height,
+                height: height,
                 color: loadImgColor(img),
               );
             },

@@ -38,6 +38,10 @@ class Movie {
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
+    final gallery = json['gallery'].cast<String>();
+    // Lets things more `dynamic`
+    gallery.shuffle();
+
     return Movie._(
       id: json['id'],
       title: json['title'],
@@ -55,7 +59,7 @@ class Movie {
       score: json['score'].toDouble(),
       trailer: json['trailer'],
       genres: json['genres'].cast<String>(),
-      gallery: json['gallery'].cast<String>(),
+      gallery: gallery,
     );
   }
 
