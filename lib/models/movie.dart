@@ -12,6 +12,7 @@ class Movie {
   final int year;
   final int duration;
   final double score;
+  final String ageIndication;
   final String trailer;
   final List<String> genres;
   final List<String> gallery;
@@ -29,6 +30,7 @@ class Movie {
     required this.director,
     required this.year,
     required this.duration,
+    required this.ageIndication,
     required this.score,
     required this.trailer,
     required this.genres,
@@ -47,6 +49,7 @@ class Movie {
       description: json['description'],
       promotionalImage: json['promotional_image'],
       director: json['director'],
+      ageIndication: json['mpaa'],
       year: json['release_year'].toInt(),
       duration: json['duration'].toInt(),
       score: json['score'].toDouble(),

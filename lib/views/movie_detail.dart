@@ -193,7 +193,7 @@ class MovieDetail extends StatelessWidget {
             title,
             const SizedBox(height: 24),
             Text(
-              '${movie.year} | ${movie.formatedHour}',
+              '${movie.year} | ${movie.ageIndication} | ${movie.formatedHour}',
               style: CustomStyle.description2,
             ),
             const SizedBox(height: 16),
