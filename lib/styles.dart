@@ -105,4 +105,16 @@ class CustomStyle {
     elevation: 24,
     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
   );
+
+  static final footerText = GoogleFonts.tiltNeon(
+    fontSize: 16,
+    letterSpacing: 1,
+    fontWeight: FontWeight.w200,
+  );
+
+  static final footerText2 = GoogleFonts.oswald(
+    fontSize: 16,
+    letterSpacing: 1,
+    fontWeight: FontWeight.bold,
+  );
 }

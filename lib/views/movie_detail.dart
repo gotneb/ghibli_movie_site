@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:ghibli_movie_site/components/footer.dart';
 import 'package:ghibli_movie_site/models/movie.dart';
 import 'package:ghibli_movie_site/styles.dart';
 import 'package:image_pixels/image_pixels.dart';
@@ -15,6 +16,19 @@ class MovieDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final extraSpace = ImagePixels(
+      imageProvider: NetworkImage(movie.promotionalImage),
+      builder: (_, img) {
+        if (img.hasImage) {
+          return Container(
+            height: 80,
+            color: img.pixelColorAtAlignment!(Alignment.bottomCenter)
+          );
+        }
+        return const Placeholder();
+      },
+    );
+
     return Scaffold(
       body: ListView(
         children: [
@@ -23,6 +37,8 @@ class MovieDetail extends StatelessWidget {
             _buildMainContent(context),
           ]),
           _buildGallery(context),
+          extraSpace,
+          Footer(movie: movie),
         ],
       ),
     );
@@ -40,6 +56,7 @@ class MovieDetail extends StatelessWidget {
     }).toList();
 
     final gridGallery = GridView.count(
+      physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 3,
       childAspectRatio: 12 / 7,
       mainAxisSpacing: 0.01 * width,
@@ -59,7 +76,7 @@ class MovieDetail extends StatelessWidget {
             builder: (context, img) {
               return Container(
                 width: width,
-                height: height,
+                height: 1.1 * height,
                 color: loadImgColor(img),
               );
             },
@@ -163,12 +180,7 @@ class MovieDetail extends StatelessWidget {
             .animate(
               onPlay: (controller) => controller.repeat(),
             )
-            .moveY(
-              begin: 0,
-              end: -16,
-              duration: time,
-              curve: Curves.ease
-            ));
+            .moveY(begin: 0, end: -16, duration: time, curve: Curves.ease));
 
     return Container(
       padding: EdgeInsets.fromLTRB(padding, 0, 0, 12),
