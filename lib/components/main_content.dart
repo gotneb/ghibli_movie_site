@@ -128,7 +128,7 @@ class _MainContentState extends State<MainContent> {
           ),
           const SizedBox(height: 8),
           Text(
-            '${movie.year} | ${movie.formatedHour} | ${movie.formatedGenres}',
+            '${movie.year} | ${movie.ageIndication} | ${movie.formatedHour} | ${movie.formatedGenres}',
             style: CustomStyle.normalText,
           ),
           const SizedBox(height: 24),

@@ -56,7 +56,6 @@ class MovieDetail extends StatelessWidget {
     }).toList();
 
     final gridGallery = GridView.count(
-      physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 3,
       childAspectRatio: 12 / 7,
       mainAxisSpacing: 0.01 * width,
