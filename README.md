@@ -11,4 +11,4 @@ https://github.com/gotneb/ghibli_movie_site/assets/67703889/fbc2d56f-cb5a-41e4-b
 
 
 ## Motivation
-Studio Ghibli has a lot of beautiful movies, that has a strong and beautiful lore behind for each title. I truly got inpired by those I tried make something that tries to bring of _"what is watching a Studio Ghibli"_ feels like.
+Studio Ghibli has a lot of beautiful movies, that has strong girls and beautiful lore behind for each title. I'd truly gotten inpired by those and I tried make something that tries to bring of _"what is watching a Studio Ghibli"_ feels like.
